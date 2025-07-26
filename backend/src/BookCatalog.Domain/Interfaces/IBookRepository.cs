@@ -3,8 +3,6 @@ using BookCatalog.Domain.Entities;
 
 namespace BookCatalog.Domain.Interfaces;
 
-public interface IBookRepository : IRepository<Book>
+public interface IBookRepository : IRepository<Book, Guid>
 {
-    Task<IEnumerable<Book>> GetWithRelatedEntitiesAsync (CancellationToken cancellationToken = default);
-    Task<Book?> GetByIdWithRelatedEntitiesAsync (Guid id, CancellationToken cancellationToken = default);
 }

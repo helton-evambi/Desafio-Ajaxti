@@ -3,6 +3,6 @@ using BookCatalog.Domain.Entities;
 
 namespace BookCatalog.Domain.Interfaces;
 
-public interface IAuthorRepository : IRepository<Author>
+public interface IAuthorRepository : IRepository<Author, Guid>
 {
 }
