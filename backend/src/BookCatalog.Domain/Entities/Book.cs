@@ -10,7 +10,6 @@ public class Book : Entity<Guid>
     public DateTime? PublishedDate { get; set; }
     public string? ISBN { get; set; }
     public int? PageCount { get; set; }
-    public string? Language { get; set; }
     public string? Publisher { get; set; }
 
     public Guid AuthorId { get; set; }
