@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BookCatalog.Application.ViewModel;
 
-namespace BookCatalog.Application.ViewModel
+public record GenreViewModel
 {
-    internal class GenreViewModel
-    {
-    }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
 }
