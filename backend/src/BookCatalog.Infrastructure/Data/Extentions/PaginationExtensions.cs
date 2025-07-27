@@ -1,7 +1,7 @@
 ﻿using BookCatalog.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookCatalog.Infrastructure.Extentions;
+namespace BookCatalog.Infrastructure.Data.Extentions;
 
 public static class PaginationExtensions
 {

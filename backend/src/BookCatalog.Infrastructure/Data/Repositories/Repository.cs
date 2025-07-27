@@ -1,22 +1,15 @@
 ﻿using BookCatalog.Domain.Abstractions;
-using BookCatalog.Infrastructure.Data;
-using BookCatalog.Infrastructure.Extentions;
+using BookCatalog.Infrastructure.Data.Extentions;
 using BookCatalog.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace BookCatalog.Infrastructure.Repositories;
+namespace BookCatalog.Infrastructure.Data.Repositories;
 
-public class Repository<T, TId> : IRepository<T, TId> where T : class, IEntity<TId>
+public class Repository<T, TId>(DbContext context) : IRepository<T, TId> where T : class, IEntity<TId>
 {
-    protected readonly ApplicationDbContext _context;
-    protected readonly DbSet<T> _dbSet;
-
-    public Repository(ApplicationDbContext context)
-    {
-        _context = context;
-        _dbSet = context.Set<T>();
-    }
+    protected readonly DbContext _context = context;
+    protected readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task<PagedResult<T>> GetAllAsync(PagedParameters parameters, params Expression<Func<T, object>>[] includes)
     {
