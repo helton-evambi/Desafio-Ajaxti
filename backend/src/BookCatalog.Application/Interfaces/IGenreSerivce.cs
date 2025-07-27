@@ -3,6 +3,6 @@ using BookCatalog.Application.ViewModel;
 
 namespace BookCatalog.Application.Interfaces;
 
-public interface IGenreDto : IService<CreateGenreDto, UpdateGenreDto, GenreViewModel, Guid>
+public interface IGenreSerivce : IBaseCrudService<CreateGenreDto, UpdateGenreDto, GenreViewModel, Guid>
 {
 }
