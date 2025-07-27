@@ -6,6 +6,6 @@ namespace BookCatalog.Application.Interfaces;
 
 public interface IAuthorService : IBaseCrudService<CreateAuthorDto, UpdateAuthorDto, AuthorViewModel, Guid>
 {
-    Task<IEnumerable<PagedResult<AuthorViewModel>>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default);
+    Task<PagedResult<AuthorViewModel>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default);
     Task<AuthorViewModel?> GetByIdWithBooksAsync(Guid id, CancellationToken cancellationToken = default);
 }

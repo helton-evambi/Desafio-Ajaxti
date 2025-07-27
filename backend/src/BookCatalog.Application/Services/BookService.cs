@@ -14,20 +14,23 @@ public class BookService(
     IValidator<CreateBookDto> createValidator,
     IValidator<UpdateBookDto> updateValidator) : IBookService
 {
-    public async Task<IEnumerable<PagedResult<BookViewModel>>> GetAllAsync(PagedParameters parameters)
+    public async Task<PagedResult<BookViewModel>> GetAllAsync(PagedParameters parameters)
     {
-        var books = await repository.GetAllAsync(parameters, b => b.Author, b => b.Genre);
+        var pagedBooks = await repository.GetAllAsync(parameters, b => b.Author, b => b.Genre);
 
-        var booksViewModels = books.Select(pagedBook => new PagedResult<BookViewModel>
+        var bookViewModels = pagedBooks.Items.Select(book => book.Adapt<BookViewModel>() with
         {
-            Items = pagedBook.Items.Select(book => book.Adapt<BookViewModel>() with
-            {
-                AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
-                GenreName = book.Genre?.Name ?? string.Empty
-            })
-        });
+            AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
+            GenreName = book.Genre?.Name ?? string.Empty
+        }).ToList();
 
-        return booksViewModels;
+        return new PagedResult<BookViewModel>
+        {
+            Items = bookViewModels,
+            TotalCount = pagedBooks.TotalCount,
+            Page = pagedBooks.Page,
+            PageSize = pagedBooks.PageSize
+        };
     }
 
     public async Task<BookViewModel?> GetByIdAsync(Guid id)
@@ -44,42 +47,48 @@ public class BookService(
         };
     }
 
-    public async Task<IEnumerable<PagedResult<BookViewModel>>> GetByAuthorIdAsync(Guid authorId, PagedParameters parameters)
+    public async Task<PagedResult<BookViewModel>> GetByAuthorIdAsync(Guid authorId, PagedParameters parameters)
     {
         var books = await repository.FindAsync(parameters, b => b.AuthorId == authorId, b => b.Author, b => b.Genre);
 
-        if (books is null || !books.Any())
+        if (books is null)
             throw new NotFoundException($"Nenhum livro encontrado para o autor com ID {authorId}.");
 
-        var booksViewModels = books.Select(pagedBook => new PagedResult<BookViewModel>
+        var bookViewModels = books.Items.Select(book => book.Adapt<BookViewModel>() with
         {
-            Items = pagedBook.Items.Select(book => book.Adapt<BookViewModel>() with
-            {
-                AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
-                GenreName = book.Genre?.Name ?? string.Empty
-            })
-        });
+            AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
+            GenreName = book.Genre?.Name ?? string.Empty
+        }).ToList();
 
-        return booksViewModels;
+        return new PagedResult<BookViewModel>
+        {
+            Items = bookViewModels,
+            TotalCount = books.TotalCount,
+            Page = books.Page,
+            PageSize = books.PageSize
+        };
     }
 
-    public async Task<IEnumerable<PagedResult<BookViewModel>>> GetByGenreIdAsync(Guid genreId, PagedParameters parameters)
+    public async Task<PagedResult<BookViewModel>> GetByGenreIdAsync(Guid genreId, PagedParameters parameters)
     {
         var books = await repository.FindAsync(parameters, b => b.GenreId == genreId, b => b.Author, b => b.Genre);
 
-        if (books is null || !books.Any())
+        if (books is null)
             throw new NotFoundException($"Nenhum livro encontrado para o género com ID {genreId}.");
 
-        var booksViewModels = books.Select(pagedBook => new PagedResult<BookViewModel>
+        var bookViewModels = books.Items.Select(book => book.Adapt<BookViewModel>() with
         {
-            Items = pagedBook.Items.Select(book => book.Adapt<BookViewModel>() with
-            {
-                AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
-                GenreName = book.Genre?.Name ?? string.Empty
-            })
-        });
+            AuthorName = $"{book.Author?.FirstName} {book.Author?.LastName}".Trim(),
+            GenreName = book.Genre?.Name ?? string.Empty
+        }).ToList();
 
-        return booksViewModels;
+        return new PagedResult<BookViewModel>
+        {
+            Items = bookViewModels,
+            TotalCount = books.TotalCount,
+            Page = books.Page,
+            PageSize = books.PageSize
+        };
     }
 
     public async Task<BookViewModel> AddAsync(CreateBookDto createDto, CancellationToken cancellationToken = default)

@@ -4,7 +4,7 @@ namespace BookCatalog.Application.Interfaces;
 
 public interface IBaseCrudService<TCreateDto, TUpdateDto, TViewModel, TId>
 {
-    Task<IEnumerable<PagedResult<TViewModel>>> GetAllAsync(PagedParameters parameters);
+    Task<PagedResult<TViewModel>> GetAllAsync(PagedParameters parameters);
     Task<TViewModel?> GetByIdAsync(TId id);
     Task<TViewModel> AddAsync(TCreateDto createDto, CancellationToken cancellationToken = default);
     Task<bool> UpdateAsync(TId id, TUpdateDto updateDto, CancellationToken cancellationToken = default);

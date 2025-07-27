@@ -14,10 +14,10 @@ public class GenreService(
     IValidator<CreateGenreDto> createValidator,
     IValidator<UpdateGenreDto> updateValidator) : IGenreSerivce
 {
-    public async Task<IEnumerable<PagedResult<GenreViewModel>>> GetAllAsync(PagedParameters parameters)
+    public async Task<PagedResult<GenreViewModel>> GetAllAsync(PagedParameters parameters)
     {
         var genres = await repository.GetAllAsync(parameters);
-        return genres.Adapt<IEnumerable<PagedResult<GenreViewModel>>>();
+        return genres.Adapt<PagedResult<GenreViewModel>>();
     }
 
     public async Task<GenreViewModel?> GetByIdAsync(Guid id)
