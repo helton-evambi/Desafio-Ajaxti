@@ -14,10 +14,10 @@ public class AuthorService(
     IValidator<CreateAuthorDto> createValidator,
     IValidator<UpdateAuthorDto> updateValidator) : IAuthorService
 {
-    public async Task<IEnumerable<PagedResult<AuthorViewModel>>> GetAllAsync(PagedParameters parameters)
+    public async Task<PagedResult<AuthorViewModel>> GetAllAsync(PagedParameters parameters)
     {
         var authors = await repository.GetAllAsync(parameters);
-        return authors.Adapt<IEnumerable<PagedResult<AuthorViewModel>>>();
+        return authors.Adapt<PagedResult<AuthorViewModel>>();
     }
 
     public async Task<AuthorViewModel?> GetByIdAsync(Guid id)
@@ -28,10 +28,10 @@ public class AuthorService(
         return author.Adapt<AuthorViewModel>();
     }
 
-    public async Task<IEnumerable<PagedResult<AuthorViewModel>>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<AuthorViewModel>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default)
     {
         var authors = await repository.GetAllAsync(parameters, a => a.Books);
-        return authors.Adapt<IEnumerable<PagedResult<AuthorViewModel>>>();
+        return authors.Adapt<PagedResult<AuthorViewModel>>();
     }
 
     public async Task<AuthorViewModel?> GetByIdWithBooksAsync(Guid id, CancellationToken cancellationToken = default)
