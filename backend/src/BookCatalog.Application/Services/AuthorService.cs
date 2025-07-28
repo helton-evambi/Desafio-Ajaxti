@@ -25,32 +25,36 @@ public class AuthorService(
         var author = await repository.GetByIdAsync(id);
         if (author is null)
             throw new NotFoundException($"Author com ID {id} não encontrado.");
+
         return author.Adapt<AuthorViewModel>();
     }
 
     public async Task<PagedResult<AuthorViewModel>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default)
     {
         var authors = await repository.GetAllAsync(parameters, a => a.Books);
+
         return authors.Adapt<PagedResult<AuthorViewModel>>();
     }
 
     public async Task<AuthorViewModel?> GetByIdWithBooksAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var author = await repository.GetByIdAsync(id, a => a.Books);
+
         if (author is null)
             throw new NotFoundException($"Author com ID {id} não encontrado.");
+
         return author.Adapt<AuthorViewModel>();
     }
 
     public async Task<AuthorViewModel> AddAsync(CreateAuthorDto createDto, CancellationToken cancellationToken = default)
     {
         var validationResult = await createValidator.ValidateAsync(createDto, cancellationToken);
-
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
         var author = createDto.Adapt<Author>();
         await repository.AddAsync(author, cancellationToken);
+
         return author.Adapt<AuthorViewModel>();
     }
 
@@ -62,18 +66,21 @@ public class AuthorService(
 
     public async Task<bool> UpdateAsync(Guid id, UpdateAuthorDto updateDto, CancellationToken cancellationToken = default)
     {
-        var validationResult = await updateValidator.ValidateAsync(updateDto, cancellationToken);
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        if (id != updateDto.Id)
+            throw new BadRequestException($"Os Id são diferentes ");
 
         var author = await repository.SingleOrDefaultAsync(a => a.Id == id);
         if (author is null)
             throw new NotFoundException($"Author com ID {id} não encontrado.");
 
+        var validationResult = await updateValidator.ValidateAsync(updateDto, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var updatedAuthor = updateDto.Adapt(author);
         var result = await repository.UpdateAsync(updatedAuthor, cancellationToken);
+
         return result;
     }
-
 }
