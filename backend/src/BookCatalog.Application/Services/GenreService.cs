@@ -42,14 +42,18 @@ public class GenreService(
 
     public async Task<bool> UpdateAsync(Guid id, UpdateGenreDto updateDto, CancellationToken cancellationToken = default)
     {
+        if (id != updateDto.Id)
+            throw new BadRequestException($"Os Id são diferentes ");
+
+        var genre = await repository.SingleOrDefaultAsync(g => g.Id == id);
+        
+        if (genre is null)
+            throw new NotFoundException($"Gênero com ID {id} não encontrado.");
+
         var validationResult = await updateValidator.ValidateAsync(updateDto, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-
-        var genre = await repository.SingleOrDefaultAsync(g => g.Id == id);
-        if (genre is null)
-            throw new NotFoundException($"Gênero com ID {id} não encontrado.");
 
         var updatedGenre = updateDto.Adapt(genre);
         var result = await repository.UpdateAsync(updatedGenre, cancellationToken);
