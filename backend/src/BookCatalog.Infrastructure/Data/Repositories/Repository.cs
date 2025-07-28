@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 
 namespace BookCatalog.Infrastructure.Data.Repositories;
 
-public class Repository<T, TId>(DbContext context) : IRepository<T, TId> where T : class, IEntity<TId>
+public class Repository<T, TId>(ApplicationDbContext context) : IRepository<T, TId> where T : class, IEntity<TId>
 {
-    protected readonly DbContext _context = context;
+    protected readonly ApplicationDbContext _context = context;
     protected readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task<PagedResult<T>> GetAllAsync(PagedParameters parameters, params Expression<Func<T, object>>[] includes)
@@ -40,12 +40,14 @@ public class Repository<T, TId>(DbContext context) : IRepository<T, TId> where T
         return await query.SingleOrDefaultAsync(predicate);
     }
 
-    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (entity == null)
             throw new ArgumentNullException(nameof(entity));
 
         await _dbSet.AddAsync(entity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
     public async Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken = default)
@@ -120,6 +122,7 @@ public class Repository<T, TId>(DbContext context) : IRepository<T, TId> where T
         }
         return query;
     }
+
     private async Task<PagedResult<T>> ExecutePaginatedQueryAsync(IQueryable<T> query, PagedParameters parameters)
     {
         var totalCount = await query.CountAsync();
