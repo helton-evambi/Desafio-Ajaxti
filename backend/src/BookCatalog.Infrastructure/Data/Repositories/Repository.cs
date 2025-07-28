@@ -115,6 +115,8 @@ public class Repository<T, TId>(ApplicationDbContext context) : IRepository<T, T
     {
         if (includes?.Length > 0)
         {
+            query = query.AsSplitQuery();
+
             foreach (var include in includes)
             {
                 query = query.Include(include);
