@@ -101,7 +101,13 @@ public class BookService(
         var book = createDto.Adapt<Book>();
         await repository.AddAsync(book, cancellationToken);
 
-        return book.Adapt<BookViewModel>();
+        var savedBook = await repository.GetByIdAsync(book.Id, b => b.Author, b => b.Genre);
+
+        return savedBook.Adapt<BookViewModel>() with
+        {
+            AuthorName = $"{savedBook?.Author?.FirstName} {savedBook?.Author?.LastName}".Trim(),
+            GenreName = savedBook?.Genre?.Name ?? string.Empty
+        };
     }
 
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
