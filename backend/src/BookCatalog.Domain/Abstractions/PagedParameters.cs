@@ -1,6 +1,6 @@
 ﻿namespace BookCatalog.Domain.Abstractions;
 
-public abstract class PagedParameters
+public class PagedParameters
 {
     private const int MaxPageSize = 50;
     private int _pageSize = 10;
