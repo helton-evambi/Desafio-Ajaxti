@@ -1,4 +1,5 @@
 ﻿using BookCatalog.Application.Interfaces;
+using BookCatalog.Application.Mappings;
 using BookCatalog.Application.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,9 @@ public static class DepndencyInjection
     public static IServiceCollection AddApplicationServices
         (this IServiceCollection services)
     {
+        // mappings
+        MapsterConfig.Configure();
+
         // validators
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
