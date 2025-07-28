@@ -1,6 +1,8 @@
 using BookCatalog.API;
 using BookCatalog.Application;
+using BookCatalog.Application.Mappings;
 using BookCatalog.Infrastructure;
+using BookCatalog.Infrastructure.Data.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,5 +18,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseApiServices();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.InitialiseDatabaseAsync();
+}
 
 app.Run();
