@@ -1,5 +1,7 @@
 ﻿using Asp.Versioning;
 using BookCatalog.Shared.Exceptions.Handler;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
@@ -13,8 +15,8 @@ public static class DepndencyInjection
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
         services.AddExceptionHandler<CustomExceptionHandler>();
 
-        //services.AddHealthChecks()
-        //    .AddSqlServer(configuration.GetConnectionString("Database")!);
+        services.AddHealthChecks()
+            .AddNpgSql(configuration.GetConnectionString("Database")!);
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -43,11 +45,11 @@ public static class DepndencyInjection
     public static WebApplication UseApiServices(this WebApplication app)
     {
         app.UseExceptionHandler(options => { });
-        //app.UseHealthChecks("/health",
-        //    new HealthCheckOptions
-        //    {
-        //        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-        //    });
+        app.UseHealthChecks("/health",
+            new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+            });
 
         if (app.Environment.IsDevelopment())
         {
