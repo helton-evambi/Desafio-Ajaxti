@@ -1,8 +1,9 @@
 using BookCatalog.API;
 using BookCatalog.Application;
-using BookCatalog.Application.Mappings;
 using BookCatalog.Infrastructure;
 using BookCatalog.Infrastructure.Data.Extentions;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
