@@ -316,13 +316,13 @@ Desafio-Ajaxti/
 │                  (Controllers, Middleware)                  │
 ├─────────────────────────────────────────────────────────────┤
 │                BookCatalog.Application                      │
-│            (Use Cases, DTOs, Interfaces)                    │
+│            (Use Cases, DTOs, Interfaces, ViewModels)        │
 ├─────────────────────────────────────────────────────────────┤
 │                  BookCatalog.Domain                         │
-│              (Entities, Value Objects)                      │
+│              (Entities, Abstracts)                          │
 ├─────────────────────────────────────────────────────────────┤
 │               BookCatalog.Infrastructure                    │
-│            (Data Access, External Services)                 │
+│            (Data Access,  Migrations)                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
