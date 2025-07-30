@@ -144,26 +144,13 @@ export class GenresPageComponent implements OnInit, OnDestroy {
         cssClass: 'btn-secondary',
         action: () => this.editGenre(genre),
       },
-    ];
-
-    const hasBooks = genre.books && genre.books.length > 0;
-
-    if (!hasBooks) {
-      actions.push({
+      {
         label: 'Excluir',
         icon: 'fas fa-trash',
         cssClass: 'btn-danger',
         action: () => this.deleteGenre(genre),
-      });
-    } else {
-      actions.push({
-        label: 'Ver Livros',
-        icon: 'fas fa-book',
-        cssClass: 'btn-secondary',
-        action: () => this.viewGenreBooks(genre.id),
-      });
-    }
-
+      },
+    ];
     return actions;
   }
 
@@ -238,11 +225,5 @@ export class GenresPageComponent implements OnInit, OnDestroy {
         },
       });
     }
-  }
-
-  viewGenreBooks(genreId: string): void {
-    this.router.navigate(['/books'], {
-      queryParams: { genreId: genreId },
-    });
   }
 }
