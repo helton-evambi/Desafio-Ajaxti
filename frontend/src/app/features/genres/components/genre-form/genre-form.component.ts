@@ -8,9 +8,12 @@ import {
   Output,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
@@ -56,9 +59,43 @@ export class GenreFormComponent implements OnInit, OnChanges {
 
   private createForm(): FormGroup {
     return this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      description: [''],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(100),
+        ],
+      ],
+      description: ['', [this.descriptionValidator()]],
     });
+  }
+
+  private descriptionValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      if (control.value.length < 10) {
+        return {
+          minLength: {
+            message: 'A descrição deve ter pelo menos 10 caracteres.',
+          },
+        };
+      }
+
+      if (control.value.length > 1000) {
+        return {
+          maxLength: {
+            message:
+              'A descrição do gênero não pode ter mais de 1000 caracteres.',
+          },
+        };
+      }
+
+      return null;
+    };
   }
 
   private populateForm(): void {
@@ -73,6 +110,39 @@ export class GenreFormComponent implements OnInit, OnChanges {
   isFieldInvalid(fieldName: string): boolean {
     const field = this.genreForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.genreForm.get(fieldName);
+
+    if (!field || !field.errors || !field.touched) {
+      return '';
+    }
+
+    const errors = field.errors;
+
+    if (fieldName === 'name') {
+      if (errors['required']) {
+        return 'O nome do gênero é obrigatório.';
+      }
+      if (errors['minlength']) {
+        return 'O nome do gênero deve ter pelo menos 2 caracteres.';
+      }
+      if (errors['maxlength']) {
+        return 'O nome do gênero não pode ter mais de 100 caracteres.';
+      }
+    }
+
+    if (fieldName === 'description') {
+      if (errors['minLength']) {
+        return 'A descrição deve ter pelo menos 10 caracteres.';
+      }
+      if (errors['maxLength']) {
+        return 'A descrição do gênero não pode ter mais de 1000 caracteres.';
+      }
+    }
+
+    return 'Campo inválido.';
   }
 
   onSubmit(): void {
