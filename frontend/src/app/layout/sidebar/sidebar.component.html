@@ -1,4 +1,10 @@
-<aside class="sidebar" id="sidebar">
+<aside
+  class="sidebar"
+  id="sidebar"
+  [class.collapsed]="isCollapsed"
+  [class.mobile]="isMobile"
+  *ngIf="!isMobile"
+>
   <ul class="sidebar-menu">
     <li class="sidebar-item">
       <a
