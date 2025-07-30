@@ -4,7 +4,7 @@
     placeholder="Digite o título do livro"
     [required]="true"
     [hasError]="isFieldInvalid('title')"
-    errorMessage="O título é obrigatório"
+    [errorMessage]="getFieldErrorMessage('title')"
     formControlName="title"
   >
   </app-form-input>
@@ -12,6 +12,8 @@
   <app-form-input
     label="Subtítulo"
     placeholder="Digite o subtítulo (opcional)"
+    [hasError]="isFieldInvalid('subtitle')"
+    [errorMessage]="getFieldErrorMessage('subtitle')"
     formControlName="subtitle"
   >
   </app-form-input>
@@ -20,6 +22,8 @@
     label="Descrição"
     placeholder="Descreva o livro..."
     [rows]="3"
+    [hasError]="isFieldInvalid('description')"
+    [errorMessage]="getFieldErrorMessage('description')"
     formControlName="description"
   >
   </app-form-textarea>
@@ -30,7 +34,7 @@
     [required]="true"
     [options]="authorOptions"
     [hasError]="isFieldInvalid('authorId')"
-    errorMessage="Selecione um autor"
+    [errorMessage]="getFieldErrorMessage('authorId')"
     formControlName="authorId"
   >
   </app-form-select>
@@ -41,7 +45,7 @@
     [required]="true"
     [options]="genreOptions"
     [hasError]="isFieldInvalid('genreId')"
-    errorMessage="Selecione um gênero"
+    [errorMessage]="getFieldErrorMessage('genreId')"
     formControlName="genreId"
   >
   </app-form-select>
@@ -51,7 +55,7 @@
       label="ISBN"
       placeholder="978-85-01-00000-0"
       [hasError]="isFieldInvalid('isbn')"
-      errorMessage="ISBN deve ter formato válido"
+      [errorMessage]="getFieldErrorMessage('isbn')"
       formControlName="isbn"
     >
     </app-form-input>
@@ -60,6 +64,8 @@
       label="Páginas"
       type="number"
       placeholder="0"
+      [hasError]="isFieldInvalid('pageCount')"
+      [errorMessage]="getFieldErrorMessage('pageCount')"
       formControlName="pageCount"
     >
     </app-form-input>
@@ -69,6 +75,8 @@
     <app-form-input
       label="Editora"
       placeholder="Nome da editora"
+      [hasError]="isFieldInvalid('publisher')"
+      [errorMessage]="getFieldErrorMessage('publisher')"
       formControlName="publisher"
     >
     </app-form-input>
@@ -76,6 +84,8 @@
     <app-form-input
       label="Data de Publicação"
       type="date"
+      [hasError]="isFieldInvalid('publishedDate')"
+      [errorMessage]="getFieldErrorMessage('publishedDate')"
       formControlName="publishedDate"
     >
     </app-form-input>
