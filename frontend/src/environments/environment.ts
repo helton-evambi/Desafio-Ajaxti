@@ -1,4 +1,8 @@
+declare const window: any;
+
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7051/api/v1.0',
+  apiUrl: window.ENV?.API_URL
+    ? window.ENV.API_URL + '/api/v1.0'
+    : 'http://localhost:7051/api/v1.0',
 };
