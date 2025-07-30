@@ -28,6 +28,6 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(a => new { a.FirstName, a.LastName });
+        //builder.HasIndex(a => new { a.FirstName, a.LastName });
     }
 }

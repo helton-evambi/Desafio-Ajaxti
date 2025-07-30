@@ -43,7 +43,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
 
 
         builder.HasIndex(b => b.Title);
-        builder.HasIndex(b => b.ISBN).IsUnique();
+        //builder.HasIndex(b => b.ISBN).IsUnique();
         builder.HasIndex(b => b.AuthorId);
         builder.HasIndex(b => b.GenreId);
     }
