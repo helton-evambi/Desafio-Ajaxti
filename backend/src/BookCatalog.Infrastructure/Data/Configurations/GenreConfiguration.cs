@@ -24,6 +24,6 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(g => g.Name).IsUnique();
+        //builder.HasIndex(g => g.Name).IsUnique();
     }
 }

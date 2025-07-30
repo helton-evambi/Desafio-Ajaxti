@@ -18,11 +18,11 @@ namespace BookCatalog.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DateOfDeath = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DateOfDeath = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Biography = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,8 +36,8 @@ namespace BookCatalog.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,14 +52,14 @@ namespace BookCatalog.Infrastructure.Data.Migrations
                     Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Subtitle = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     Description = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: true),
-                    PublishedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    PublishedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ISBN = table.Column<string>(type: "character varying(17)", maxLength: 17, nullable: true),
                     PageCount = table.Column<int>(type: "int", nullable: true),
                     Publisher = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     GenreId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,11 +79,6 @@ namespace BookCatalog.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Authors_FirstName_LastName",
-                table: "Authors",
-                columns: new[] { "FirstName", "LastName" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
@@ -94,21 +89,9 @@ namespace BookCatalog.Infrastructure.Data.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_ISBN",
-                table: "Books",
-                column: "ISBN",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_Title",
                 table: "Books",
                 column: "Title");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Genres_Name",
-                table: "Genres",
-                column: "Name",
-                unique: true);
         }
 
         /// <inheritdoc />
