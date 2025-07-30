@@ -5,7 +5,7 @@
       placeholder="Digite o nome"
       [required]="true"
       [hasError]="isFieldInvalid('firstName')"
-      errorMessage="O nome é obrigatório"
+      [errorMessage]="getFieldErrorMessage('firstName')"
       formControlName="firstName"
     >
     </app-form-input>
@@ -15,7 +15,7 @@
       placeholder="Digite o sobrenome"
       [required]="true"
       [hasError]="isFieldInvalid('lastName')"
-      errorMessage="O sobrenome é obrigatório"
+      [errorMessage]="getFieldErrorMessage('lastName')"
       formControlName="lastName"
     >
     </app-form-input>
@@ -25,6 +25,8 @@
     <app-form-input
       label="Data de Nascimento"
       type="date"
+      [hasError]="isFieldInvalid('dateOfBirth')"
+      [errorMessage]="getFieldErrorMessage('dateOfBirth')"
       formControlName="dateOfBirth"
     >
     </app-form-input>
@@ -32,6 +34,8 @@
     <app-form-input
       label="Data de Falecimento"
       type="date"
+      [hasError]="isFieldInvalid('dateOfDeath')"
+      [errorMessage]="getFieldErrorMessage('dateOfDeath')"
       formControlName="dateOfDeath"
     >
     </app-form-input>
@@ -41,6 +45,8 @@
     label="Biografia"
     placeholder="Escreva sobre o autor..."
     [rows]="4"
+    [hasError]="isFieldInvalid('biography')"
+    [errorMessage]="getFieldErrorMessage('biography')"
     formControlName="biography"
   >
   </app-form-textarea>
