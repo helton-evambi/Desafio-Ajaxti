@@ -14,6 +14,7 @@ public class Repository<T, TId>(ApplicationDbContext context) : IRepository<T, T
     public async Task<PagedResult<T>> GetAllAsync(PagedParameters parameters, params Expression<Func<T, object>>[] includes)
     {
         var query = ApplyIncludes(_dbSet, includes);
+        query = query.OrderByDescending(x => x.CreatedAt);
         return await ExecutePaginatedQueryAsync(query, parameters);
     }
 
