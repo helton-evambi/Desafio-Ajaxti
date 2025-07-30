@@ -16,7 +16,7 @@ public class GenresController(IGenreSerivce genreService) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<GenreViewModel>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<PagedResult<GenreViewModel>>> GetAllAsync(
         [FromQuery] PagedParameters parameters,
         CancellationToken cancellationToken = default)
@@ -27,8 +27,8 @@ public class GenresController(IGenreSerivce genreService) : ControllerBase
 
     [HttpGet("{id:guid}", Name = "GetGenreById")]
     [ProducesResponseType(typeof(GenreViewModel), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GenreViewModel>> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default)
@@ -37,10 +37,22 @@ public class GenresController(IGenreSerivce genreService) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("with-books")]
+    [ProducesResponseType(typeof(PagedResult<GenreViewModel>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<PagedResult<GenreViewModel>>> GetAllWithBooksAsync(
+        [FromQuery] PagedParameters parameters,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await genreService.GetAllWithBooksAsync(parameters, cancellationToken);
+        return Ok(result);
+    }
+
+
     [HttpPost]
     [ProducesResponseType(typeof(GenreViewModel), (int)HttpStatusCode.Created)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.UnprocessableEntity)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     public async Task<ActionResult<GenreViewModel>> CreateAsync(
         [FromBody] CreateGenreDto createDto,
         CancellationToken cancellationToken = default)
@@ -54,9 +66,9 @@ public class GenresController(IGenreSerivce genreService) : ControllerBase
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.UnprocessableEntity)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     public async Task<IActionResult> UpdateAsync(
         Guid id,
         [FromBody] UpdateGenreDto updateDto,
@@ -68,13 +80,25 @@ public class GenresController(IGenreSerivce genreService) : ControllerBase
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteAsync(
         Guid id,
         CancellationToken cancellationToken = default)
     {
         await genreService.DeleteAsync(id, cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(PagedResult<GenreViewModel>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<PagedResult<GenreViewModel>>> GetAllByNameAsync(
+        [FromQuery] string name,
+        [FromQuery] PagedParameters parameters,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await genreService.SearchByNameAsync(name, parameters, cancellationToken);
+        return Ok(result);
     }
 }

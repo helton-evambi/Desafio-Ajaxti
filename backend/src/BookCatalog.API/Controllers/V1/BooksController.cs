@@ -16,7 +16,7 @@ public class BooksController(IBookService bookService) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<BookViewModel>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<PagedResult<BookViewModel>>> GetAllAsync(
         [FromQuery] PagedParameters parameters,
         CancellationToken cancellationToken = default)
@@ -27,8 +27,8 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpGet("{id:guid}", Name = "GetBookById")]
     [ProducesResponseType(typeof(BookViewModel), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<BookViewModel>> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default)
@@ -39,8 +39,8 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpGet("author/{authorId:guid}")]
     [ProducesResponseType(typeof(PagedResult<BookViewModel>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<PagedResult<BookViewModel>>> GetByAuthorIdAsync(
         Guid authorId,
         [FromQuery] PagedParameters parameters,
@@ -52,8 +52,8 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpGet("genre/{genreId:guid}")]
     [ProducesResponseType(typeof(PagedResult<BookViewModel>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<PagedResult<BookViewModel>>> GetByGenreIdAsync(
         Guid genreId,
         [FromQuery] PagedParameters parameters,
@@ -65,8 +65,8 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(BookViewModel), (int)HttpStatusCode.Created)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.UnprocessableEntity)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     public async Task<ActionResult<BookViewModel>> CreateAsync(
         [FromBody] CreateBookDto createDto,
         CancellationToken cancellationToken = default)
@@ -80,9 +80,9 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.UnprocessableEntity)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     public async Task<IActionResult> UpdateAsync(
         Guid id,
         [FromBody] UpdateBookDto updateDto,
@@ -94,13 +94,25 @@ public class BooksController(IBookService bookService) : ControllerBase
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteAsync(
         Guid id,
         CancellationToken cancellationToken = default)
     {
         await bookService.DeleteAsync(id, cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(PagedResult<BookViewModel>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<PagedResult<BookViewModel>>> GetAllByNameAsync(
+        [FromQuery] string name,
+        [FromQuery] PagedParameters parameters,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await bookService.SearchByNameAsync(name, parameters, cancellationToken);
+        return Ok(result);
     }
 }
