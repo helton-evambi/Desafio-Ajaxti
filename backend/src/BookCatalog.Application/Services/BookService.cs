@@ -31,6 +31,7 @@ public class BookService(
         return book.Adapt<BookViewModel>();
     }
 
+
     public async Task<PagedResult<BookViewModel>> GetByAuthorIdAsync(Guid authorId, PagedParameters parameters)
     {
         var books = await repository.FindAsync(parameters, b => b.AuthorId == authorId, b => b.Author, b => b.Genre);
@@ -93,5 +94,15 @@ public class BookService(
         var updatedBook = updateDto.Adapt(book);
         var result = await repository.UpdateAsync(updatedBook, cancellationToken);
         return result;
+    }
+    public async Task<PagedResult<BookViewModel>> SearchByNameAsync(string name, PagedParameters parameters, CancellationToken cancellationToken)
+    {
+        var normalizedName = name.ToLower();
+        var books = await repository
+            .GetByFilterAsync(b => b.Title
+                                .ToLower()
+                                .Contains(normalizedName), parameters,  b => b.Author, b => b.Genre);
+
+        return books.Adapt<PagedResult<BookViewModel>>();
     }
 }

@@ -28,6 +28,13 @@ public class GenreService(
         return genre.Adapt<GenreViewModel>();
     }
 
+
+    public async Task<PagedResult<GenreViewModel>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default)
+    {
+        var genres= await repository.GetAllAsync(parameters, g => g.Books);
+        return genres.Adapt<PagedResult<GenreViewModel>>();
+    }
+
     public async Task<GenreViewModel> AddAsync(CreateGenreDto createDto, CancellationToken cancellationToken = default)
     {
         var validationResult = await createValidator.ValidateAsync(createDto, cancellationToken);
@@ -65,4 +72,14 @@ public class GenreService(
         var genre = await repository.DeleteAsync(id, cancellationToken);
         return true;
     }
+    public async Task<PagedResult<GenreViewModel>> SearchByNameAsync(string name, PagedParameters parameters, CancellationToken cancellationToken = default)
+    {
+        var normalizedName = name.ToLower();
+        var genres = await repository
+            .GetByFilterAsync(g => g.Name.ToLower()
+                                .Contains(normalizedName), parameters, g => g.Books);
+        return genres.Adapt<PagedResult<GenreViewModel>>();
+    }
+
+    
 }

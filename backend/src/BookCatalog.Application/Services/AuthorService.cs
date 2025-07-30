@@ -29,6 +29,8 @@ public class AuthorService(
         return author.Adapt<AuthorViewModel>();
     }
 
+
+
     public async Task<PagedResult<AuthorViewModel>> GetAllWithBooksAsync(PagedParameters parameters, CancellationToken cancellationToken = default)
     {
         var authors = await repository.GetAllAsync(parameters, a => a.Books);
@@ -82,5 +84,16 @@ public class AuthorService(
         var result = await repository.UpdateAsync(updatedAuthor, cancellationToken);
 
         return result;
+    }
+    public async Task<PagedResult<AuthorViewModel>> SearchByNameAsync(string name, PagedParameters parameters, CancellationToken cancellationToken = default)
+    {
+        var normalizedName = name.ToLower();
+        var authors = await repository
+            .GetByFilterAsync(a =>
+                a.FirstName.ToLower().Contains(normalizedName) ||
+                a.LastName.ToLower().Contains(normalizedName),
+                parameters, a => a.Books);
+
+        return authors.Adapt<PagedResult<AuthorViewModel>>();
     }
 }
