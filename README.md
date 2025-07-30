@@ -333,6 +333,7 @@ Desafio-Ajaxti/
 - `GET /api/v1.0/authors` - Listar autores
 - `GET /api/v1.0/books` - Listar livros
 - `GET /api/v1.0/genres` - Listar géneros
+- `GET /heath` - Health Checks dos backing services
 - Documentação completa: `/swagger`
 
 ### Frontend (Angular)
