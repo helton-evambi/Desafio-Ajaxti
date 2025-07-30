@@ -18,12 +18,6 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(a => a.DateOfBirth)
-           .HasColumnType("timestamp with time zone");
-
-        builder.Property(a => a.DateOfDeath)
-            .HasColumnType("timestamp with time zone");
-
         builder.Property(a => a.Biography)
             .HasMaxLength(2000);
 

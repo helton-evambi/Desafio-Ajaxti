@@ -29,9 +29,6 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.Property(b => b.Publisher)
             .HasMaxLength(200);
 
-        builder.Property(b => b.PublishedDate)
-            .HasColumnType("timestamp with time zone");
-
 
         builder.HasOne(b => b.Author)
             .WithMany(a => a.Books)
