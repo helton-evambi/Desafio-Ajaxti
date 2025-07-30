@@ -24,16 +24,9 @@ public static class MapsterConfig
                 src => src.Author != null ? $"{src.Author.FirstName} {src.Author.LastName}" : string.Empty)
             .Map(dest => dest.GenreName,
                 src => src.Genre != null ? src.Genre.Name : string.Empty)
-            .IgnoreIf((src, dest) => src.Genre == null, dest => dest.GenreName);
+            .IgnoreIf((src, dest) => src.Genre == null, dest => dest.GenreName)
+            .IgnoreIf((src, dest) => src.Author == null, dest => dest.AuthorName);
 
-        // Author → AuthorViewModel
-        config.NewConfig<Author, AuthorViewModel>()
-            .Map(dest => dest.BookTitles, src => src.Books.Adapt<List<BookViewModel>>());
-
-        // Genre → GenreViewModel
-        config.NewConfig<Genre, GenreViewModel>();
-
-        // Configuração genérica para PagedResult
         ConfigurePagedResultMappings(config);
     }
 
