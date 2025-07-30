@@ -147,94 +147,6 @@ docker compose up -d --build
 5. **Acessar**
    - Frontend: http://localhost:4200
 
-## 🏗️ Arquitetura e Tecnologias
-
-### Stack Tecnológica
-
-#### Backend - .NET 8 (Obrigatório)
-
-- **Framework**: ASP.NET Core Web API
-- **Motivo da escolha**: Tecnologia obrigatória definida no projeto
-- **Vantagens**:
-  - Performance excelente e baixo consumo de memória
-  - Ecossistema robusto com Entity Framework Core
-  - Suporte nativo para Docker e containerização
-  - Documentação automática com Swagger/OpenAPI
-  - Arquitetura Clean Architecture implementada
-
-#### Frontend - Angular 18
-
-- **Framework**: Angular com TypeScript
-- **Motivos da escolha**:
-  - **Estrutura enterprise**: Ideal para aplicações de médio/grande porte
-  - **TypeScript nativo**: Tipagem forte reduz erros e melhora manutenibilidade
-  - **Arquitetura modular**: Componentes reutilizáveis e organização escalável
-  - **Ecossistema maduro**: Vasta biblioteca de componentes (Angular Material, PrimeNG)
-  - **CLI poderosa**: Geração automática de código e build otimizado
-  - **Testes integrados**: Jasmine e Karma incluídos por padrão
-  - **PWA ready**: Suporte nativo para Progressive Web Apps
-
-#### Base de Dados - PostgreSQL 17
-
-- **SGBD**: PostgreSQL (Object-Relational Database)
-- **Motivos da escolha**:
-  - **Open Source**: Sem custos de licenciamento
-  - **Performance superior**: Otimizado para cargas de trabalho complexas
-  - **Conformidade ACID**: Transações confiáveis e consistência de dados
-  - **Extensibilidade**: Suporte a JSON, arrays, tipos customizados
-  - **Escalabilidade**: Excelente para aplicações que crescem
-  - **Compatibilidade**: Funciona perfeitamente com Entity Framework Core
-  - **Docker-friendly**: Imagens oficiais bem mantidas
-
-### Alternativas Consideradas
-
-#### Frontend
-
-- **React**: Mais flexível, mas requer mais configuração inicial
-- **Vue.js**: Curva de aprendizado menor, mas ecossistema menor
-- **Svelte**: Performance excelente, mas menos maduro para enterprise
-
-#### Base de Dados
-
-- **SQL Server**: Licenciamento caro, mas integração nativa com .NET
-- **MySQL**: Popular, mas menos recursos avançados que PostgreSQL
-- **SQLite**: Simples para desenvolvimento, mas limitado para produção
-
-### Arquitetura do Sistema
-
-```
-┌─────────────────┐    HTTP/REST    ┌─────────────────┐    Entity Framework    ┌─────────────────┐
-│   Angular SPA   │ ◄──────────────► │   .NET Web API  │ ◄─────────────────────► │   PostgreSQL    │
-│                 │                  │                 │                         │                 │
-│ - Components    │                  │ - Controllers   │                         │ - Tables        │
-│ - Services      │                  │ - Business Logic│                         │ - Relationships │
-│ - Routing       │                  │ - Data Access   │                         │ - Constraints   │
-└─────────────────┘                  └─────────────────┘                         └─────────────────┘
-```
-
-## 📁 Estrutura do Projeto
-
-```
-Desafio-Ajaxti/
-├── backend/
-│   ├── src/
-│   │   ├── BookCatalog.API/          # API principal
-│   │   ├── BookCatalog.Application/  # Lógica de aplicação
-│   │   ├── BookCatalog.Domain/       # Entidades de domínio
-│   │   ├── BookCatalog.Infrastructure/ # Acesso a dados
-│   │   └── BookCatalog.Shared/       # Utilitários compartilhados
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── app/                      # Componentes Angular
-│   │   ├── environments/             # Configurações de ambiente
-│   │   └── assets/                   # Recursos estáticos
-│   ├── Dockerfile
-│   └── package.json
-├── docker-compose.yml               # Orquestração Docker
-└── README.md
-```
-
 ## 🐛 Resolução de Problemas
 
 ### Docker
@@ -292,7 +204,91 @@ docker compose up --build
 - Para desenvolvimento, recomenda-se usar Docker para consistência
 - O Swagger está disponível apenas em modo Development
 - Logs detalhados estão habilitados em Development
-- As migrações são executadas automaticamente no Docker
+
+## 🏗️ Arquitetura e Tecnologias
+
+### Stack Tecnológica
+
+#### Backend - .NET 8 (Obrigatório)
+
+- **Framework**: ASP.NET Core Web API
+- **Motivo da escolha**: Tecnologia obrigatória definida no projeto
+- **Vantagens**:
+  - Performance excelente e baixo consumo de memória
+  - Ecossistema robusto com Entity Framework Core
+  - Suporte nativo para Docker e containerização
+  - Documentação automática com Swagger/OpenAPI
+  - Arquitetura Clean Architecture implementada
+
+#### Frontend - Angular 18
+
+- **Framework**: Angular com TypeScript
+- **Motivos da escolha**:
+  - **Estrutura enterprise**: Ideal para aplicações de médio/grande porte
+  - **TypeScript nativo**: Tipagem forte reduz erros e melhora manutenibilidade
+  - **Arquitetura modular**: Componentes reutilizáveis e organização escalável
+  - **Ecossistema maduro**: Vasta biblioteca de componentes (Angular Material, PrimeNG)
+  - **CLI poderosa**: Geração automática de código e build otimizado
+  - **Testes integrados**: Jasmine e Karma incluídos por padrão
+  - **PWA ready**: Suporte nativo para Progressive Web Apps
+
+#### Base de Dados - PostgreSQL
+
+- **SGBD**: PostgreSQL (Object-Relational Database)
+- **Motivos da escolha**:
+  - **Open Source**: Sem custos de licenciamento
+  - **Performance superior**: Otimizado para cargas de trabalho complexas
+  - **Conformidade ACID**: Transações confiáveis e consistência de dados
+  - **Extensibilidade**: Suporte a JSON, arrays, tipos customizados
+  - **Escalabilidade**: Excelente para aplicações que crescem
+  - **Compatibilidade**: Funciona perfeitamente com Entity Framework Core
+  - **Docker-friendly**: Imagens oficiais bem mantidas
+
+### Alternativas Consideradas
+
+#### Frontend
+
+- **React**: Mais flexível, mas requer mais configuração inicial
+
+#### Base de Dados
+
+- **SQL Server**: Licenciamento caro, mas integração nativa com .NET
+- **MySQL**: Popular, mas menos recursos avançados que PostgreSQL
+
+### Arquitetura do Sistema
+
+```
+┌─────────────────┐    HTTP/REST    ┌─────────────────┐    Entity Framework    ┌─────────────────┐
+│   Angular SPA   │ ◄──────────────► │   .NET Web API  │ ◄─────────────────────► │   PostgreSQL    │
+│                 │                  │                 │                         │                 │
+│ - Components    │                  │ - Controllers   │                         │ - Tables        │
+│ - Services      │                  │ - Business Logic│                         │ - Relationships │
+│ - Routing       │                  │ - Data Access   │                         │ - Constraints   │
+└─────────────────┘                  └─────────────────┘                         └─────────────────┘
+```
+
+## 📁 Estrutura do Projeto
+
+```
+Desafio-Ajaxti/
+├── backend/
+│   ├── src/
+│   │   ├── BookCatalog.API/          # API principal
+│   │   ├── BookCatalog.Application/  # Lógica de aplicação
+│   │   ├── BookCatalog.Domain/       # Entidades de domínio
+│   │   ├── BookCatalog.Infrastructure/ # Acesso a dados
+│   │   └── BookCatalog.Shared/       # Utilitários compartilhados
+│   └── Dockerfile
+├── frontend/
+│   ├── src/
+│   │   ├── app/                      # Componentes Angular
+│   │   ├── environments/             # Configurações de ambiente
+│   │   └── assets/                   # Recursos estáticos
+│   ├── Dockerfile
+│   └── package.json
+├── docker-compose.yml               # Orquestração Docker
+└── README.md
+```
 
 ## 💡 Decisões de Design
 
